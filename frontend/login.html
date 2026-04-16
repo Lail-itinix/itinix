@@ -26,7 +26,6 @@ url("images/bromo.jpg") center/cover no-repeat;
 padding:20px;
 }
 
-/* ================= BOX ================= */
 .container{
 width:100%;
 max-width:430px;
@@ -65,7 +64,6 @@ color:#666;
 margin-bottom:28px;
 }
 
-/* ================= FORM ================= */
 .group{
 margin-bottom:18px;
 }
@@ -86,6 +84,7 @@ position:relative;
 width:100%;
 padding:14px 16px;
 padding-left:45px;
+padding-right:45px;
 border:1px solid #ddd;
 border-radius:14px;
 font-size:16px;
@@ -98,7 +97,7 @@ border-color:#2b73ff;
 box-shadow:0 0 0 4px rgba(43,115,255,.12);
 }
 
-.input-box i{
+.left-icon{
 position:absolute;
 left:16px;
 top:50%;
@@ -107,14 +106,16 @@ color:#666;
 font-size:16px;
 }
 
-.show-pass{
+.right-icon{
 position:absolute;
-right:15px;
-left:auto;
+right:16px;
+top:50%;
+transform:translateY(-50%);
+color:#666;
+font-size:16px;
 cursor:pointer;
 }
 
-/* ================= BUTTON ================= */
 button{
 width:100%;
 padding:15px;
@@ -134,7 +135,6 @@ background:#1e5fe2;
 transform:translateY(-2px);
 }
 
-/* ================= FOOTER ================= */
 .bottom{
 text-align:center;
 margin-top:18px;
@@ -160,7 +160,6 @@ text-decoration:none;
 color:#2b73ff;
 }
 
-/* ================= ANIMATION ================= */
 @keyframes fadeUp{
 from{
 opacity:0;
@@ -172,20 +171,17 @@ transform:translateY(0);
 }
 }
 
-/* ================= MOBILE ================= */
 @media(max-width:500px){
-
 .container{
 padding:28px 22px;
 }
-
 .logo{
 font-size:34px;
 }
-
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -197,12 +193,12 @@ font-size:34px;
 <div class="logo">ITINIX</div>
 <div class="sub">Masuk untuk melanjutkan perjalananmu</div>
 
-<form onsubmit="loginUser(event)">
+<form id="loginForm">
 
 <div class="group">
 <label>Email</label>
 <div class="input-box">
-<i class="fa-solid fa-envelope"></i>
+<i class="fa-solid fa-envelope left-icon"></i>
 <input type="email" id="email" required placeholder="Masukkan email">
 </div>
 </div>
@@ -210,9 +206,9 @@ font-size:34px;
 <div class="group">
 <label>Password</label>
 <div class="input-box">
-<i class="fa-solid fa-lock"></i>
+<i class="fa-solid fa-lock left-icon"></i>
 <input type="password" id="password" required placeholder="Masukkan password">
-<i class="fa-solid fa-eye show-pass" onclick="togglePass()"></i>
+<i class="fa-solid fa-eye right-icon" id="eyeBtn" onclick="togglePass()"></i>
 </div>
 </div>
 
@@ -220,9 +216,7 @@ font-size:34px;
 <a href="#" onclick="lupaPassword()">Lupa password?</a>
 </div>
 
-<button type="submit">
-Login
-</button>
+<button type="submit">Login</button>
 
 </form>
 
@@ -234,48 +228,75 @@ Belum punya akun?
 </div>
 
 <script>
+if(localStorage.getItem("isLogin") === "true"){
+window.location.href = "dashboard.html";
+}
+
 function togglePass(){
+
 const input = document.getElementById("password");
-const icon = document.querySelector(".show-pass");
+const icon = document.getElementById("eyeBtn");
 
 if(input.type === "password"){
 input.type = "text";
-icon.className = "fa-solid fa-eye-slash show-pass";
+icon.classList.remove("fa-eye");
+icon.classList.add("fa-eye-slash");
 }else{
 input.type = "password";
-icon.className = "fa-solid fa-eye show-pass";
-}
+icon.classList.remove("fa-eye-slash");
+icon.classList.add("fa-eye");
 }
 
-function loginUser(e){
+}
+
+document.getElementById("loginForm").addEventListener("submit", function(e){
+
 e.preventDefault();
 
 let email = document.getElementById("email").value.trim();
 let password = document.getElementById("password").value;
 
-let savedEmail = localStorage.getItem("userEmail");
-let savedPass = localStorage.getItem("userPassword");
+let users = JSON.parse(localStorage.getItem("users")) || [];
 
-if(email === savedEmail && password === savedPass){
+let user = users.find(data =>
+data.email === email &&
+data.password === password
+);
+
+if(user){
 
 localStorage.setItem("isLogin","true");
+localStorage.setItem("userLogin", JSON.stringify(user));
 
 alert("Login berhasil!");
+
 window.location.href = "dashboard.html";
 
 }else{
+
 alert("Email atau password salah!");
+
 }
-}
+
+});
 
 function lupaPassword(){
 
-let email = localStorage.getItem("userEmail");
+let email = document.getElementById("email").value.trim();
 
-if(email){
-alert("Password akun terdaftar:\n" + localStorage.getItem("userPassword"));
+if(email === ""){
+alert("Masukkan email terlebih dahulu.");
+return;
+}
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+let user = users.find(data => data.email === email);
+
+if(user){
+alert("Password akun kamu: " + user.password);
 }else{
-alert("Belum ada akun terdaftar.");
+alert("Email tidak ditemukan.");
 }
 
 }

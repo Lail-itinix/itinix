@@ -26,11 +26,10 @@ url("images/bromo.jpg") center/cover no-repeat;
 padding:20px;
 }
 
-/* ================= BOX ================= */
 .container{
 width:100%;
 max-width:460px;
-background:rgba(255,255,255,.95);
+background:rgba(255,255,255,.96);
 padding:38px;
 border-radius:24px;
 box-shadow:0 20px 40px rgba(0,0,0,.18);
@@ -53,7 +52,6 @@ color:#666;
 margin-bottom:28px;
 }
 
-/* ================= FORM ================= */
 .group{
 margin-bottom:18px;
 }
@@ -74,6 +72,7 @@ position:relative;
 width:100%;
 padding:14px 16px;
 padding-left:45px;
+padding-right:45px;
 border:1px solid #ddd;
 border-radius:14px;
 font-size:16px;
@@ -86,7 +85,7 @@ border-color:#2b73ff;
 box-shadow:0 0 0 4px rgba(43,115,255,.12);
 }
 
-.input-box i{
+.left-icon{
 position:absolute;
 left:16px;
 top:50%;
@@ -95,7 +94,16 @@ color:#666;
 font-size:16px;
 }
 
-/* ================= BUTTON ================= */
+.toggle{
+position:absolute;
+right:16px;
+top:50%;
+transform:translateY(-50%);
+color:#666;
+cursor:pointer;
+font-size:16px;
+}
+
 button{
 width:100%;
 padding:15px;
@@ -115,7 +123,6 @@ background:#1d5de0;
 transform:translateY(-2px);
 }
 
-/* ================= FOOTER ================= */
 .bottom{
 text-align:center;
 margin-top:18px;
@@ -141,7 +148,6 @@ text-decoration:none;
 margin-right:8px;
 }
 
-/* ================= ANIM ================= */
 @keyframes fadeUp{
 from{
 opacity:0;
@@ -153,20 +159,17 @@ transform:translateY(0);
 }
 }
 
-/* ================= MOBILE ================= */
 @media(max-width:500px){
-
 .container{
 padding:28px 22px;
 }
-
 .logo{
 font-size:34px;
 }
-
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -178,12 +181,12 @@ font-size:34px;
 <div class="logo">ITINIX</div>
 <div class="sub">Buat akun baru untuk mulai perjalananmu</div>
 
-<form onsubmit="daftar(event)">
+<form id="signupForm">
 
 <div class="group">
 <label>Nama Lengkap</label>
 <div class="input-box">
-<i class="fa-solid fa-user"></i>
+<i class="fa-solid fa-user left-icon"></i>
 <input type="text" id="nama" required placeholder="Masukkan nama lengkap">
 </div>
 </div>
@@ -191,7 +194,7 @@ font-size:34px;
 <div class="group">
 <label>Email</label>
 <div class="input-box">
-<i class="fa-solid fa-envelope"></i>
+<i class="fa-solid fa-envelope left-icon"></i>
 <input type="email" id="email" required placeholder="Masukkan email">
 </div>
 </div>
@@ -199,22 +202,22 @@ font-size:34px;
 <div class="group">
 <label>Password</label>
 <div class="input-box">
-<i class="fa-solid fa-lock"></i>
+<i class="fa-solid fa-lock left-icon"></i>
 <input type="password" id="password" required placeholder="Masukkan password">
+<i class="fa-solid fa-eye toggle" onclick="lihatPassword('password',this)"></i>
 </div>
 </div>
 
 <div class="group">
 <label>Konfirmasi Password</label>
 <div class="input-box">
-<i class="fa-solid fa-key"></i>
+<i class="fa-solid fa-key left-icon"></i>
 <input type="password" id="confirm" required placeholder="Ulangi password">
+<i class="fa-solid fa-eye toggle" onclick="lihatPassword('confirm',this)"></i>
 </div>
 </div>
 
-<button type="submit">
-Sign Up
-</button>
+<button type="submit">Sign Up</button>
 
 </form>
 
@@ -226,27 +229,59 @@ Sudah punya akun?
 </div>
 
 <script>
-function daftar(e){
+function lihatPassword(id,icon){
+let input = document.getElementById(id);
+
+if(input.type === "password"){
+input.type = "text";
+icon.classList.remove("fa-eye");
+icon.classList.add("fa-eye-slash");
+}else{
+input.type = "password";
+icon.classList.remove("fa-eye-slash");
+icon.classList.add("fa-eye");
+}
+}
+
+document.getElementById("signupForm").addEventListener("submit", function(e){
+
 e.preventDefault();
 
 let nama = document.getElementById("nama").value.trim();
 let email = document.getElementById("email").value.trim();
-let pass = document.getElementById("password").value;
+let password = document.getElementById("password").value;
 let confirm = document.getElementById("confirm").value;
 
-if(pass !== confirm){
+if(password !== confirm){
 alert("Konfirmasi password tidak sama!");
 return;
 }
 
-localStorage.setItem("userNama", nama);
-localStorage.setItem("userEmail", email);
-localStorage.setItem("userPassword", pass);
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+let cekEmail = users.find(user => user.email === email);
+
+if(cekEmail){
+alert("Email sudah terdaftar!");
+return;
+}
+
+let userBaru = {
+nama: nama,
+email: email,
+password: password,
+history: []
+};
+
+users.push(userBaru);
+
+localStorage.setItem("users", JSON.stringify(users));
 
 alert("Akun berhasil dibuat!");
 
 window.location.href = "login.html";
-}
+
+});
 </script>
 
 </body>
