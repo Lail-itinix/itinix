@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITINIX - Sign Up</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:
+linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.55)),
+url("images/bromo.jpg") center/cover no-repeat;
+padding:20px;
+}
+
+/* ================= BOX ================= */
+.container{
+width:100%;
+max-width:460px;
+background:rgba(255,255,255,.95);
+padding:38px;
+border-radius:24px;
+box-shadow:0 20px 40px rgba(0,0,0,.18);
+animation:fadeUp .8s ease;
+}
+
+.logo{
+text-align:center;
+font-size:42px;
+font-weight:900;
+color:#2b73ff;
+margin-bottom:8px;
+letter-spacing:2px;
+}
+
+.sub{
+text-align:center;
+font-size:16px;
+color:#666;
+margin-bottom:28px;
+}
+
+/* ================= FORM ================= */
+.group{
+margin-bottom:18px;
+}
+
+.group label{
+display:block;
+font-size:14px;
+font-weight:700;
+margin-bottom:8px;
+color:#333;
+}
+
+.input-box{
+position:relative;
+}
+
+.input-box input{
+width:100%;
+padding:14px 16px;
+padding-left:45px;
+border:1px solid #ddd;
+border-radius:14px;
+font-size:16px;
+outline:none;
+transition:.2s;
+}
+
+.input-box input:focus{
+border-color:#2b73ff;
+box-shadow:0 0 0 4px rgba(43,115,255,.12);
+}
+
+.input-box i{
+position:absolute;
+left:16px;
+top:50%;
+transform:translateY(-50%);
+color:#666;
+font-size:16px;
+}
+
+/* ================= BUTTON ================= */
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:14px;
+background:#2b73ff;
+color:white;
+font-size:18px;
+font-weight:700;
+cursor:pointer;
+transition:.2s;
+margin-top:10px;
+}
+
+button:hover{
+background:#1d5de0;
+transform:translateY(-2px);
+}
+
+/* ================= FOOTER ================= */
+.bottom{
+text-align:center;
+margin-top:18px;
+font-size:15px;
+color:#555;
+}
+
+.bottom a{
+color:#2b73ff;
+font-weight:700;
+text-decoration:none;
+}
+
+.back{
+display:inline-block;
+margin-bottom:18px;
+font-size:15px;
+color:#555;
+text-decoration:none;
+}
+
+.back i{
+margin-right:8px;
+}
+
+/* ================= ANIM ================= */
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(25px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:500px){
+
+.container{
+padding:28px 22px;
+}
+
+.logo{
+font-size:34px;
+}
+
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<a href="index.html" class="back">
+<i class="fa-solid fa-arrow-left"></i>Kembali
+</a>
+
+<div class="logo">ITINIX</div>
+<div class="sub">Buat akun baru untuk mulai perjalananmu</div>
+
+<form onsubmit="daftar(event)">
+
+<div class="group">
+<label>Nama Lengkap</label>
+<div class="input-box">
+<i class="fa-solid fa-user"></i>
+<input type="text" id="nama" required placeholder="Masukkan nama lengkap">
+</div>
+</div>
+
+<div class="group">
+<label>Email</label>
+<div class="input-box">
+<i class="fa-solid fa-envelope"></i>
+<input type="email" id="email" required placeholder="Masukkan email">
+</div>
+</div>
+
+<div class="group">
+<label>Password</label>
+<div class="input-box">
+<i class="fa-solid fa-lock"></i>
+<input type="password" id="password" required placeholder="Masukkan password">
+</div>
+</div>
+
+<div class="group">
+<label>Konfirmasi Password</label>
+<div class="input-box">
+<i class="fa-solid fa-key"></i>
+<input type="password" id="confirm" required placeholder="Ulangi password">
+</div>
+</div>
+
+<button type="submit">
+Sign Up
+</button>
+
+</form>
+
+<div class="bottom">
+Sudah punya akun?
+<a href="login.html">Login</a>
+</div>
+
+</div>
+
+<script>
+function daftar(e){
+e.preventDefault();
+
+let nama = document.getElementById("nama").value.trim();
+let email = document.getElementById("email").value.trim();
+let pass = document.getElementById("password").value;
+let confirm = document.getElementById("confirm").value;
+
+if(pass !== confirm){
+alert("Konfirmasi password tidak sama!");
+return;
+}
+
+localStorage.setItem("userNama", nama);
+localStorage.setItem("userEmail", email);
+localStorage.setItem("userPassword", pass);
+
+alert("Akun berhasil dibuat!");
+
+window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

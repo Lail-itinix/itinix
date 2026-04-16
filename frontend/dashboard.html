@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITINIX</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+background:#f4f6fa;
+color:#222;
+overflow-x:hidden;
+}
+
+/* ================= HERO ================= */
+.hero{
+height:100vh;
+background:url("images/Pantai Balekembang.webp") center/cover no-repeat;
+position:relative;
+}
+
+.overlay{
+background:rgba(0,0,0,.45);
+height:100%;
+padding:25px;
+}
+
+/* ================= NAV ================= */
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:60px;
+}
+
+.left-location{
+width:58px;
+height:58px;
+border-radius:50%;
+background:white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:24px;
+cursor:pointer;
+box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.logo{
+font-size:74px;
+font-weight:900;
+letter-spacing:4px;
+color:white;
+text-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.nav-right{
+display:flex;
+align-items:center;
+gap:16px;
+}
+
+.nav-right select{
+padding:12px 16px;
+border:none;
+border-radius:14px;
+font-size:16px;
+cursor:pointer;
+}
+
+.user-icon{
+font-size:44px;
+color:white;
+cursor:pointer;
+}
+
+/* ================= HERO CONTENT ================= */
+.hero-content{
+max-width:1100px;
+margin:auto;
+text-align:center;
+padding-top:60px;
+}
+
+.hero-content h1{
+font-size:86px;
+color:white;
+font-weight:900;
+margin-bottom:35px;
+text-shadow:0 12px 30px rgba(0,0,0,.25);
+}
+
+.search-box{
+display:flex;
+max-width:980px;
+margin:auto;
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 15px 40px rgba(0,0,0,.18);
+}
+
+.search-box input{
+flex:1;
+padding:24px;
+border:none;
+font-size:28px;
+outline:none;
+cursor:pointer;
+}
+
+.search-box button{
+width:105px;
+border:none;
+background:#2b73ff;
+color:white;
+font-size:30px;
+cursor:pointer;
+}
+
+/* ================= SECTION ================= */
+.section{
+padding:60px;
+}
+
+.section h2{
+font-size:62px;
+font-weight:900;
+margin-bottom:35px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+gap:28px;
+}
+
+.card{
+background:white;
+border-radius:24px;
+overflow:hidden;
+box-shadow:0 12px 30px rgba(0,0,0,.08);
+transition:.2s;
+}
+
+.card:hover{
+transform:translateY(-6px);
+}
+
+.card img{
+width:100%;
+height:230px;
+object-fit:cover;
+display:block;
+}
+
+.card-content{
+padding:20px;
+}
+
+.card h3{
+font-size:24px;
+margin-bottom:14px;
+min-height:58px;
+}
+
+.meta{
+display:flex;
+gap:16px;
+font-size:20px;
+color:#555;
+margin-bottom:12px;
+flex-wrap:wrap;
+}
+
+.tag{
+display:inline-block;
+padding:10px 18px;
+border-radius:999px;
+background:#edf3ff;
+font-size:18px;
+}
+
+/* ================= PROFILE POPUP ================= */
+.popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.55);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.popup-box{
+width:480px;
+max-width:95%;
+background:white;
+border-radius:28px;
+padding:28px;
+position:relative;
+box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+
+.close{
+position:absolute;
+top:18px;
+right:22px;
+font-size:30px;
+cursor:pointer;
+}
+
+.profile-top{
+text-align:center;
+margin-bottom:20px;
+}
+
+.avatar-wrap{
+position:relative;
+display:inline-block;
+}
+
+.avatar-img{
+width:95px;
+height:95px;
+border-radius:50%;
+object-fit:cover;
+border:4px solid #2b73ff;
+}
+
+.change-photo{
+position:absolute;
+bottom:0;
+right:0;
+width:34px;
+height:34px;
+border-radius:50%;
+background:#2b73ff;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+font-size:14px;
+}
+
+.profile-top h2{
+font-size:38px;
+margin-top:12px;
+}
+
+.profile-top p{
+font-size:18px;
+color:#666;
+}
+
+.profile-item{
+padding:15px 0;
+border-bottom:1px solid #eee;
+font-size:18px;
+}
+
+.pass-box{
+display:flex;
+gap:10px;
+align-items:center;
+margin-top:10px;
+}
+
+.pass-box input{
+flex:1;
+border:none;
+background:#f4f6fa;
+padding:12px;
+border-radius:12px;
+font-size:18px;
+}
+
+.pass-box i{
+font-size:22px;
+cursor:pointer;
+color:#666;
+}
+
+.profile-item a{
+display:inline-block;
+margin-top:10px;
+font-weight:700;
+color:#4d2dff;
+text-decoration:none;
+cursor:pointer;
+}
+
+.history{
+margin-top:10px;
+padding-left:22px;
+line-height:1.8;
+}
+
+/* ================= MAP POPUP ================= */
+.map-popup{
+position:fixed;
+inset:0;
+background:white;
+display:none;
+z-index:9999;
+}
+
+.map-header{
+position:absolute;
+top:18px;
+left:18px;
+z-index:999;
+background:white;
+padding:22px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,.12);
+width:380px;
+max-width:90%;
+}
+
+.map-header h3{
+font-size:22px;
+margin-bottom:14px;
+}
+
+.map-header p{
+font-size:15px;
+line-height:1.6;
+margin-bottom:8px;
+color:#444;
+}
+
+.map-back{
+position:absolute;
+top:18px;
+right:18px;
+z-index:999;
+padding:14px 22px;
+background:#2b73ff;
+color:white;
+border:none;
+border-radius:14px;
+font-size:18px;
+cursor:pointer;
+}
+
+#mapFrame{
+width:100%;
+height:100%;
+border:none;
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+
+.logo{
+font-size:42px;
+}
+
+.hero-content h1{
+font-size:46px;
+}
+
+.search-box input{
+font-size:18px;
+padding:16px;
+}
+
+.search-box button{
+width:70px;
+font-size:22px;
+}
+
+.section{
+padding:25px;
+}
+
+.section h2{
+font-size:36px;
+}
+
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+<div class="overlay">
+
+<nav>
+
+<div class="left-location" onclick="bukaMapRealtime()">
+<i class="fa-solid fa-location-dot"></i>
+</div>
+
+<div class="logo">ITINIX</div>
+
+<div class="nav-right">
+
+<select id="language" onchange="changeLanguage()">
+<option value="id">🇮🇩 Indonesia</option>
+<option value="en">🇺🇸 English</option>
+</select>
+
+<i class="fa-solid fa-user-circle user-icon" onclick="bukaProfil()"></i>
+
+</div>
+
+</nav>
+
+<div class="hero-content">
+
+<h1 id="titleText">Rencanakan Liburan</h1>
+
+<div class="search-box" onclick="bukaSearchPage()">
+<input id="searchBox" type="text" placeholder="Cari destinasi..." readonly>
+<button><i class="fa-solid fa-magnifying-glass"></i></button>
+</div>
+
+</div>
+</div>
+</header>
+
+<!-- ================= DESTINASI ================= -->
+<section class="section">
+
+<h2 id="detailText">Detail Destinasi</h2>
+
+<div class="grid" id="wisataList"></div>
+
+</section>
+
+<!-- ================= PROFILE ================= -->
+<div class="popup" id="popupProfil">
+
+<div class="popup-box">
+
+<span class="close" onclick="tutupProfil()">✖</span>
+
+<div class="profile-top">
+
+<div class="avatar-wrap">
+<img src="images/default.jpg" id="profilePhoto" class="avatar-img">
+<div class="change-photo" onclick="document.getElementById('uploadFoto').click()">
+<i class="fa-solid fa-camera"></i>
+</div>
+</div>
+
+<input type="file" id="uploadFoto" accept="image/*" hidden onchange="gantiFoto(event)">
+
+<h2>Traveler</h2>
+<p>traveler@email.com</p>
+
+</div>
+
+<div class="profile-item">
+<b>Username</b><br>Traveler
+</div>
+
+<div class="profile-item">
+<b>Email</b><br>traveler@email.com
+</div>
+
+<div class="profile-item">
+<b>Password</b>
+
+<div class="pass-box">
+<input type="password" id="pass" value="12345678" readonly>
+<i class="fa-solid fa-eye" id="eyeIcon" onclick="lihatPassword()"></i>
+</div>
+
+<a onclick="lupaSandi()">Lupa sandi?</a>
+</div>
+
+<div class="profile-item">
+<b>Riwayat Destinasi</b>
+
+<ul class="history">
+<li>Jatim Park 1</li>
+<li>Coban Rondo</li>
+<li>Museum Angkut</li>
+</ul>
+
+</div>
+
+</div>
+</div>
+
+<!-- ================= MAP REALTIME ================= -->
+<div class="map-popup" id="mapPopup">
+
+<div class="map-header">
+<h3>Lokasi Anda</h3>
+<p id="alamatText">Mendeteksi lokasi...</p>
+<p id="koordinatText"></p>
+</div>
+
+<button class="map-back" onclick="tutupMap()">← Kembali</button>
+
+<iframe id="mapFrame"></iframe>
+
+</div>
+
+<script>
+
+/* ================= PROFILE ================= */
+function bukaProfil(){
+document.getElementById("popupProfil").style.display="flex";
+}
+
+function tutupProfil(){
+document.getElementById("popupProfil").style.display="none";
+}
+
+function lihatPassword(){
+let pass = document.getElementById("pass");
+let eye = document.getElementById("eyeIcon");
+
+if(pass.type==="password"){
+pass.type="text";
+eye.className="fa-solid fa-eye-slash";
+}else{
+pass.type="password";
+eye.className="fa-solid fa-eye";
+}
+}
+
+function lupaSandi(){
+alert("Link reset password dikirim ke traveler@email.com");
+}
+
+function gantiFoto(e){
+const file = e.target.files[0];
+if(file){
+const url = URL.createObjectURL(file);
+document.getElementById("profilePhoto").src = url;
+}
+}
+
+/* ================= SEARCH ================= */
+function bukaSearchPage(){
+window.location.href="search.html";
+}
+
+/* ================= LANGUAGE ================= */
+function changeLanguage(){
+let val = document.getElementById("language").value;
+
+if(val==="en"){
+document.getElementById("titleText").innerHTML="Plan Your Vacation";
+document.getElementById("detailText").innerHTML="Destination Details";
+document.getElementById("searchBox").placeholder="Search destination...";
+}else{
+document.getElementById("titleText").innerHTML="Rencanakan Liburan";
+document.getElementById("detailText").innerHTML="Detail Destinasi";
+document.getElementById("searchBox").placeholder="Cari destinasi...";
+}
+}
+
+/* ================= MAP REALTIME ================= */
+function bukaMapRealtime(){
+
+document.getElementById("mapPopup").style.display="block";
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition(async function(pos){
+
+let lat = pos.coords.latitude;
+let lon = pos.coords.longitude;
+
+document.getElementById("koordinatText").innerHTML =
+lat.toFixed(5)+", "+lon.toFixed(5);
+
+document.getElementById("mapFrame").src =
+"https://www.openstreetmap.org/export/embed.html?bbox="
++(lon-0.01)+","+(lat-0.01)+","+(lon+0.01)+","+(lat+0.01)+"&layer=mapnik&marker="+lat+","+lon;
+
+try{
+let res = await fetch(
+`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
+);
+let data = await res.json();
+
+document.getElementById("alamatText").innerHTML =
+data.display_name;
+
+}catch{
+document.getElementById("alamatText").innerHTML =
+"Alamat tidak ditemukan";
+}
+
+});
+
+}
+}
+
+function tutupMap(){
+document.getElementById("mapPopup").style.display="none";
+}
+</script>
+
+</body>
+</html>
+<script src="js/dashboard.js"></script>

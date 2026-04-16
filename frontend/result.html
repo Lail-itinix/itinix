@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Hasil Itinerary</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f6fa;
+padding:25px;
+}
+
+.wrap{
+max-width:980px;
+margin:auto;
+}
+
+/* HEADER */
+.top{
+display:flex;
+align-items:center;
+gap:14px;
+font-size:18px;
+font-weight:700;
+margin-bottom:20px;
+}
+
+.top i{
+cursor:pointer;
+font-size:20px;
+}
+
+/* SUMMARY */
+.summary{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px;
+margin-bottom:18px;
+}
+
+.box{
+background:white;
+padding:18px;
+border-radius:16px;
+text-align:center;
+box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+.box i{
+font-size:20px;
+color:#2b73ff;
+margin-bottom:8px;
+}
+
+.box h2{
+font-size:24px;
+margin-bottom:5px;
+}
+
+.box p{
+font-size:14px;
+color:#666;
+}
+
+/* SMARTBAR */
+.smartbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.weather-live{
+background:white;
+padding:14px 18px;
+border-radius:18px;
+box-shadow:0 8px 20px rgba(0,0,0,.05);
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:700;
+font-size:15px;
+color:#333;
+}
+
+.weather-live i{
+font-size:20px;
+color:#ffb400;
+}
+
+.smart-actions{
+display:flex;
+gap:12px;
+}
+
+.smart-actions button{
+width:52px;
+height:52px;
+border:none;
+border-radius:18px;
+background:#2b73ff;
+color:white;
+font-size:18px;
+cursor:pointer;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+transition:.2s;
+}
+
+.smart-actions button:hover{
+transform:translateY(-3px);
+background:#1f5fe0;
+}
+
+/* WEATHER SUGGEST */
+#weatherSuggest{
+background:white;
+padding:18px;
+border-radius:16px;
+margin-bottom:20px;
+box-shadow:0 8px 20px rgba(0,0,0,.05);
+font-size:16px;
+font-weight:700;
+color:#2b73ff;
+line-height:1.6;
+}
+
+/* DAY */
+.day{
+background:#dcecff;
+padding:14px 18px;
+border-radius:14px;
+font-weight:700;
+font-size:18px;
+margin:20px 0 12px;
+}
+
+/* CARD */
+.card{
+background:white;
+padding:16px;
+border-radius:16px;
+box-shadow:0 6px 16px rgba(0,0,0,.05);
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+margin-bottom:14px;
+}
+
+.left{
+display:flex;
+gap:12px;
+}
+
+.num{
+width:32px;
+height:32px;
+border-radius:50%;
+background:#2b73ff;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:14px;
+font-weight:bold;
+}
+
+.detail h3{
+font-size:18px;
+color:#2b73ff;
+margin-bottom:7px;
+}
+
+.detail p{
+font-size:14px;
+line-height:1.8;
+color:#555;
+}
+
+.go{
+width:48px;
+height:48px;
+border-radius:14px;
+background:#1f3268;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:18px;
+cursor:pointer;
+}
+
+.travel{
+color:#2b73ff;
+font-weight:700;
+margin-top:5px;
+display:block;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+.summary{
+grid-template-columns:1fr;
+}
+
+.smartbar{
+flex-direction:column;
+align-items:stretch;
+}
+
+.smart-actions{
+justify-content:center;
+}
+
+.card{
+flex-direction:column;
+gap:14px;
+}
+
+.go{
+width:100%;
+height:42px;
+}
+
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<div class="top">
+<i class="fa-solid fa-arrow-left" onclick="history.back()"></i>
+Rekomendasi Itinerary
+</div>
+
+<div class="summary">
+
+<div class="box">
+<i class="fa-solid fa-dollar-sign"></i>
+<h2 id="budgetText">Rp 0</h2>
+<p>Total Budget</p>
+</div>
+
+<div class="box">
+<i class="fa-solid fa-location-dot"></i>
+<h2 id="destText">0</h2>
+<p>Total Destinasi</p>
+</div>
+
+<div class="box">
+<i class="fa-regular fa-clock"></i>
+<h2 id="hariText">0 Hari</h2>
+<p>Lama Wisata</p>
+</div>
+
+</div>
+
+<div class="smartbar">
+
+<div class="weather-live" id="weatherBox">
+<i class="fa-solid fa-cloud-sun"></i>
+<span>Mengecek cuaca...</span>
+</div>
+
+<div class="smart-actions">
+
+<button onclick="saveTrip()" title="Simpan">
+<i class="fa-solid fa-bookmark"></i>
+</button>
+
+<button onclick="downloadPDF()" title="PDF">
+<i class="fa-solid fa-file-arrow-down"></i>
+</button>
+
+<button onclick="shareTrip()" title="Share">
+<i class="fa-solid fa-share-nodes"></i>
+</button>
+
+</div>
+
+</div>
+
+<div id="weatherSuggest"></div>
+<div id="hasil"></div>
+
+</div>
+
+<script>
+
+/* =========================
+AMBIL DATA USER
+========================= */
+
+const budgetInput =
+Number(localStorage.getItem("budget")) || 500000;
+
+const hari =
+Number(localStorage.getItem("hari")) || 3;
+
+const kategoriDipilih =
+JSON.parse(localStorage.getItem("kategori")) || [];
+
+document.getElementById("hariText").innerHTML =
+hari + " Hari";
+
+/* =========================
+DATABASE DESTINASI
+========================= */
+
+let wisata = [
+
+{nama:"Sumber Sirah",jenis:"Alam",harga:5000,durasi:2},
+{nama:"Pantai Balekambang",jenis:"Alam",harga:15000,durasi:4},
+{nama:"Lembah Indah Malang",jenis:"Alam",harga:22500,durasi:3},
+{nama:"Coban Rondo",jenis:"Alam",harga:35000,durasi:3},
+{nama:"Selecta",jenis:"Alam",harga:40000,durasi:4},
+
+{nama:"Museum Brawijaya",jenis:"Budaya",harga:5000,durasi:2},
+{nama:"Kayutangan Heritage",jenis:"Budaya",harga:10000,durasi:3},
+{nama:"Museum Mpu Purwa",jenis:"Budaya",harga:10000,durasi:2},
+{nama:"Kampung Warna Warni",jenis:"Budaya",harga:10000,durasi:2},
+
+{nama:"Museum Angkut",jenis:"Buatan",harga:100000,durasi:4},
+{nama:"Jatim Park 1",jenis:"Buatan",harga:120000,durasi:5},
+{nama:"Jatim Park 2",jenis:"Buatan",harga:140000,durasi:5},
+{nama:"BNS",jenis:"Buatan",harga:90000,durasi:4}
+
+];
+
+/* FILTER */
+if(kategoriDipilih.length > 0){
+wisata = wisata.filter(x =>
+kategoriDipilih.includes(x.jenis)
+);
+}
+
+/* =========================
+SMART ITINERARY
+========================= */
+
+wisata.sort((a,b)=>a.harga-b.harga);
+
+let itinerary = [];
+let totalBudget = 0;
+
+for(let i=0;i<wisata.length;i++){
+
+if(totalBudget + wisata[i].harga <= budgetInput){
+itinerary.push(wisata[i]);
+totalBudget += wisata[i].harga;
+}
+
+}
+
+/* kalau kosong ambil 1 termurah */
+if(itinerary.length === 0 && wisata.length > 0){
+itinerary.push(wisata[0]);
+totalBudget = wisata[0].harga;
+}
+
+/* SUMMARY */
+document.getElementById("budgetText").innerHTML =
+"Rp " + totalBudget.toLocaleString("id-ID");
+
+document.getElementById("destText").innerHTML =
+itinerary.length;
+
+/* =========================
+RENDER
+========================= */
+
+let hasil = document.getElementById("hasil");
+
+let index = 0;
+let sisaDest = itinerary.length;
+let sisaHari = hari;
+
+for(let h=1; h<=hari; h++){
+
+hasil.innerHTML += `
+<div class="day">Hari ke-${h}</div>
+`;
+
+let perHari = Math.ceil(sisaDest / sisaHari);
+
+if(perHari < 1) perHari = 1;
+
+let jamSekarang = 8;
+let adaIsi = false;
+
+for(let x=0; x<perHari; x++){
+
+if(index >= itinerary.length) break;
+
+adaIsi = true;
+
+let d = itinerary[index];
+
+let mulai = jamSekarang;
+let selesai = mulai + d.durasi;
+
+let travel = random(20,45);
+
+hasil.innerHTML += `
+
+<div class="card">
+
+<div class="left">
+
+<div class="num">${x+1}</div>
+
+<div class="detail">
+
+<h3>${d.nama}</h3>
+
+<p>
+${formatJam(mulai)} - ${formatJam(selesai)}<br>
+${d.jenis}<br>
+Tiket Rp ${d.harga.toLocaleString("id-ID")}
+${
+(index < itinerary.length-1)
+?
+`<span class="travel">➡ perjalanan ke destinasi berikutnya ${travel} menit</span>`
+:
+""
+}
+</p>
+
+</div>
+</div>
+
+<div class="go" onclick="bukaMaps('${d.nama}')">
+<i class="fa-regular fa-paper-plane"></i>
+</div>
+
+</div>
+`;
+
+jamSekarang = selesai + (travel/60);
+
+index++;
+sisaDest--;
+}
+
+/* jika hari kosong */
+if(!adaIsi){
+
+hasil.innerHTML += `
+<div class="card">
+
+<div class="left">
+
+<div class="num">★</div>
+
+<div class="detail">
+
+<h3>Free Time / Kuliner / Oleh-oleh</h3>
+
+<p>
+09:00 - 13:00<br>
+Rekomendasi hari santai menikmati kota Malang.
+</p>
+
+</div>
+</div>
+
+</div>
+`;
+
+}
+
+sisaHari--;
+
+}
+
+/* =========================
+HELPER
+========================= */
+
+function random(min,max){
+return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function formatJam(j){
+
+let jam = Math.floor(j);
+let menit = Math.round((j-jam)*60);
+
+if(menit==60){
+jam++;
+menit=0;
+}
+
+return String(jam).padStart(2,"0")
++ ":" +
+String(menit).padStart(2,"0");
+
+}
+
+/* =========================
+MAPS
+========================= */
+
+function bukaMaps(tempat){
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition(function(pos){
+
+let lat = pos.coords.latitude;
+let lng = pos.coords.longitude;
+
+window.open(
+"https://www.google.com/maps/dir/?api=1&origin="
++ lat + "," + lng +
+"&destination=" +
+encodeURIComponent(tempat),
+"_blank"
+);
+
+});
+
+}else{
+
+window.open(
+"https://www.google.com/maps/search/?api=1&query=" +
+encodeURIComponent(tempat),
+"_blank"
+);
+
+}
+
+}
+
+/* =========================
+WEATHER
+========================= */
+
+cekCuacaRealtime();
+
+async function cekCuacaRealtime(){
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition(async function(pos){
+
+let lat = pos.coords.latitude;
+let lon = pos.coords.longitude;
+
+let url =
+`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+
+let res = await fetch(url);
+let data = await res.json();
+
+let temp = data.current_weather.temperature;
+let code = data.current_weather.weathercode;
+
+let icon = "fa-sun";
+let teks = "Cerah";
+let saran = "☀️ Cuaca bagus. Prioritaskan wisata alam.";
+
+if(code >=1 && code <=3){
+icon="fa-cloud-sun";
+teks="Berawan";
+saran="⛅ Cuaca cukup aman untuk semua wisata.";
+}
+
+if(code >=51){
+icon="fa-cloud-rain";
+teks="Hujan";
+saran="🌧️ Disarankan pilih wisata indoor seperti museum.";
+}
+
+if(temp >=30){
+icon="fa-temperature-high";
+teks="Panas";
+saran="🔥 Cocok wisata air seperti Sumber Sirah.";
+}
+
+document.getElementById("weatherBox").innerHTML =
+`<i class="fa-solid ${icon}"></i><span>${teks} ${temp}°C</span>`;
+
+document.getElementById("weatherSuggest").innerHTML =
+saran;
+
+});
+
+}
+
+}
+
+/* =========================
+BUTTON
+========================= */
+
+function saveTrip(){
+localStorage.setItem("savedTrip",hasil.innerHTML);
+alert("Itinerary disimpan!");
+}
+
+function shareTrip(){
+navigator.clipboard.writeText(location.href);
+alert("Link berhasil dicopy!");
+}
+
+function downloadPDF(){
+window.print();
+}
+
+</script>
+</body>
+</html>

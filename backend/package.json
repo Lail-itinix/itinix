@@ -1,0 +1,14 @@
+{
+  "name": "itinix-backend",
+  "version": "1.0.0",
+  "description": "Backend ITINIX Travel Planner",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "express": "^4.18.2"
+  }
+}

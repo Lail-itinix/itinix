@@ -1,0 +1,322 @@
+<!-- REVISI FIX search.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pencarian ITINIX</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f6fa;
+padding:25px;
+}
+
+.container{
+max-width:720px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:22px;
+box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+
+.top{
+display:flex;
+align-items:center;
+gap:14px;
+margin-bottom:30px;
+}
+
+.top i{
+font-size:24px;
+cursor:pointer;
+}
+
+.top h1{
+font-size:34px;
+}
+
+label{
+display:block;
+font-size:18px;
+font-weight:700;
+margin:22px 0 12px;
+}
+
+.small{
+font-size:14px;
+color:#666;
+margin-bottom:12px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+}
+
+.box{
+border:2px solid #dce7f7;
+border-radius:16px;
+padding:16px;
+text-align:center;
+font-size:17px;
+font-weight:700;
+cursor:pointer;
+transition:.2s;
+background:white;
+}
+
+.box.active{
+background:#2b73ff;
+border-color:#2b73ff;
+color:white;
+}
+
+input{
+width:100%;
+padding:16px;
+font-size:16px;
+border-radius:14px;
+border:2px solid #dce7f7;
+outline:none;
+}
+
+input:focus{
+border-color:#2b73ff;
+}
+
+.date-wrap{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+}
+
+.date-box{
+position:relative;
+}
+
+.date-box input{
+padding-right:50px;
+}
+
+.date-box i{
+position:absolute;
+right:16px;
+top:50%;
+transform:translateY(-50%);
+pointer-events:none;
+color:#777;
+font-size:18px;
+}
+
+button{
+width:100%;
+margin-top:28px;
+padding:18px;
+font-size:24px;
+font-weight:bold;
+border:none;
+border-radius:16px;
+background:#2b73ff;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+background:#1e5fe0;
+}
+
+@media(max-width:768px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.date-wrap{
+grid-template-columns:1fr;
+}
+
+.top h1{
+font-size:28px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="top">
+<i class="fa-solid fa-arrow-left" onclick="history.back()"></i>
+<h1>Pencarian</h1>
+</div>
+
+<label>Jenis Atraksi</label>
+<div class="small">Pilih satu atau lebih</div>
+
+<div class="grid">
+
+<div class="box" onclick="toggleBox(this)">
+🌲 Alam
+</div>
+
+<div class="box" onclick="toggleBox(this)">
+🏛️ Budaya
+</div>
+
+<div class="box" onclick="toggleBox(this)">
+🎡 Buatan
+</div>
+
+</div>
+
+<label>Budget</label>
+
+<input
+type="number"
+id="budget"
+placeholder="Contoh: 450000">
+
+<label>Lama Wisata</label>
+<div class="small">Pilih tanggal pergi & pulang</div>
+
+<div class="date-wrap">
+
+<div class="date-box">
+<input type="date" id="tglPergi">
+<i class="fa-regular fa-calendar"></i>
+</div>
+
+<div class="date-box">
+<input type="date" id="tglPulang">
+<i class="fa-regular fa-calendar"></i>
+</div>
+
+</div>
+
+<label>Wishlist Destinasi</label>
+
+<input
+type="text"
+id="wishlist"
+placeholder="Contoh: Jatim Park 2">
+
+<button onclick="buatItinerary()">
+Buat Itinerary
+</button>
+
+</div>
+
+<script>
+
+/* pilih kategori */
+function toggleBox(el){
+el.classList.toggle("active");
+}
+
+/* submit */
+function buatItinerary(){
+
+let kategori = [];
+
+document.querySelectorAll(".box.active").forEach(item=>{
+
+let teks =
+item.innerText.replace(/[^\w\s]/gi,'').trim();
+
+kategori.push(teks);
+
+});
+
+if(kategori.length==0){
+alert("Pilih minimal 1 kategori");
+return;
+}
+
+let budget =
+Number(document.getElementById("budget").value);
+
+if(!budget || budget < 50000){
+alert("Masukkan budget minimal Rp 50.000");
+return;
+}
+
+let pergi =
+document.getElementById("tglPergi").value;
+
+let pulang =
+document.getElementById("tglPulang").value;
+
+if(!pergi || !pulang){
+alert("Pilih tanggal wisata");
+return;
+}
+
+let t1 = new Date(pergi);
+let t2 = new Date(pulang);
+
+let hari =
+Math.ceil((t2 - t1)/(1000*60*60*24))+1;
+
+if(hari <=0){
+alert("Tanggal salah");
+return;
+}
+
+let wishlist =
+document.getElementById("wishlist").value.trim();
+
+/* simpan */
+localStorage.setItem(
+"kategori",
+JSON.stringify(kategori)
+);
+
+localStorage.setItem(
+"budget",
+budget
+);
+
+localStorage.setItem(
+"hari",
+hari
+);
+
+localStorage.setItem(
+"tglPergi",
+pergi
+);
+
+localStorage.setItem(
+"tglPulang",
+pulang
+);
+
+localStorage.setItem(
+"wishlist",
+wishlist
+);
+
+window.location.href="result.html";
+
+}
+
+</script>
+
+</body>
+</html>

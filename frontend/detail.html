@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Detail Destinasi</title>
+
+<link rel="stylesheet" href="css/detail.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="wrap">
+
+<div class="top">
+<i class="fa-solid fa-arrow-left"
+onclick="history.back()"></i>
+Detail Destinasi
+</div>
+
+<div class="hero">
+
+<img id="gambar"
+src="images/default.jpg">
+
+<div class="content">
+
+<h1 id="judul">Memuat...</h1>
+
+<div class="grid">
+
+<div class="box">
+<span>Rating</span>
+<b id="rating">-</b>
+</div>
+
+<div class="box">
+<span>Harga Tiket</span>
+<b id="harga">-</b>
+</div>
+
+<div class="box">
+<span>Jam Operasional</span>
+<b id="jam">-</b>
+</div>
+
+<div class="box">
+<span>Kategori</span>
+<b id="kategori">-</b>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class="desc" id="deskripsi">
+Memuat deskripsi...
+</div>
+
+<div class="action">
+
+<button class="btn primary"
+onclick="bukaMaps()">
+<i class="fa-solid fa-location-arrow"></i>
+ Buka Rute Maps
+</button>
+
+<button class="btn secondary"
+onclick="history.back()">
+<i class="fa-solid fa-house"></i>
+ Kembali
+</button>
+
+</div>
+
+</div>
+
+<script src="js/detail.js"></script>
+
+</body>
+</html>
